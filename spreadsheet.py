@@ -25,16 +25,18 @@ class SpreadSheet:
                 result = inner_value
             elif inner_value.startswith("'") and inner_value.endswith("'"):
                 result = inner_value[1:-1]
-            elif '+' in inner_value:  # Handle simple addition
-                parts = inner_value.split('+')
-                if all(part.isdigit() for part in parts):
-                    result = str(sum(int(part) for part in parts))
-                else:
+            elif '+' in inner_value or '*' in inner_value:  # Handle addition and multiplication
+                try:
+                    # Ensure only integers are evaluated
+                    parts = inner_value.replace('+', ' ').replace('*', ' ').split()
+                    if all(part.isdigit() for part in parts):
+                        result = str(eval(inner_value))
+                    else:
+                        result = '#Error'
+                except:
                     result = '#Error'
             elif inner_value in self._cells:
                 result = self.evaluate(inner_value)
-                if result == '#Error':
-                    result = '#Error'
             else:
                 result = '#Error'
         elif value.startswith("'"):

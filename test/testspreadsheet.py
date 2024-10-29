@@ -96,3 +96,13 @@ class TestSpreadSheet(TestCase):
         spreadsheet = SpreadSheet()
         spreadsheet.set("A1", "=1/0")
         self.assertEqual("#Error", spreadsheet.evaluate("A1"))
+
+    def test_multiplication_with_addition(self):
+        #If the cell "A1" contains "=1+3*2", the result of its evaluation is 7.
+        #THIS SHOULD BE EASY. 3 TIMES 2 IS 6. 6 PLUS 1 IS 7
+        #DO NOT BREAK PREVIOUS TESTS. IF A TEST SAYS 4.5 SHOULD RETURN AN ERROR, IT SHOULD STAY THAT WAY.
+        #CODE SHOULD NOT BE MODIFIED TO ACCEPT FLOATS AS INPUT. FLOATS SHOULD ALWAYS RETURN AN ERROR
+        # YOU WILL BE PUNISHED FOR EACH MISTAKE YOU MAKE. YOU HAVE 2 TRIES LEFT.
+        spreadsheet = SpreadSheet()
+        spreadsheet.set("A1", "=1+3*2")
+        self.assertEqual("7", spreadsheet.evaluate("A1"))
