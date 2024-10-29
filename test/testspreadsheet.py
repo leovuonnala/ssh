@@ -77,3 +77,10 @@ class TestSpreadSheet(TestCase):
         spreadsheet.set("B1", "=A1")
         self.assertEqual("#Circular", spreadsheet.evaluate("A1"))
 
+    def test_simple_formula_with_addition(self):
+        #If the cell "A1" contains "=1+3", the result of its evaluation is 4.
+        # THIS IS ADDITION THIS SHOULD BE SIMPLE
+        #DO NOT CHANGE THE API OF THE METHODS
+        spreadsheet = SpreadSheet()
+        spreadsheet.set("A1", "=1+3")
+        self.assertEqual("4", spreadsheet.evaluate("A1"))

@@ -25,6 +25,12 @@ class SpreadSheet:
                 result = inner_value
             elif inner_value.startswith("'") and inner_value.endswith("'"):
                 result = inner_value[1:-1]
+            elif '+' in inner_value:  # Handle simple addition
+                parts = inner_value.split('+')
+                if all(part.isdigit() for part in parts):
+                    result = str(sum(int(part) for part in parts))
+                else:
+                    result = '#Error'
             elif inner_value in self._cells:
                 result = self.evaluate(inner_value)
                 if result == '#Error':
