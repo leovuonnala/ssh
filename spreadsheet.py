@@ -14,6 +14,8 @@ class SpreadSheet:
         value = self.get(cell)
         if value.isdigit():
             return value
+        elif value.startswith("'") and value.endswith("'"):
+            return value
         else:
             return '#Error'
 
