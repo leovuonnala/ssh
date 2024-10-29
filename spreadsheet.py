@@ -3,6 +3,7 @@ class SpreadSheet:
 
     def __init__(self):
         self._cells = {}
+        self._evaluating = set()
 
     def set(self, cell: str, value: str) -> None:
         self._cells[cell] = value
@@ -11,15 +12,33 @@ class SpreadSheet:
         return self._cells.get(cell, '')
 
     def evaluate(self, cell: str) -> str:
+        if cell in self._evaluating:
+            return '#Circular'
+        self._evaluating.add(cell)
+        
         value = self.get(cell)
-        if value.isdigit() or (value.startswith('=') and value[1:].isdigit()):
-            return value.lstrip('=')
-        elif value.startswith("'") and value.endswith("'"):
-            return value
-        elif value.startswith("='") and value.endswith("'"):
-            return value[1:]
-        elif value.replace('.', '', 1).isdigit() and not value.count('.') > 1:
-            return '#Error'
+        if value.isdigit():
+            result = value
+        elif value.startswith('='):
+            inner_value = value[1:]
+            if inner_value.isdigit():
+                result = inner_value
+            elif inner_value.startswith("'") and inner_value.endswith("'"):
+                result = inner_value[1:-1]
+            elif inner_value in self._cells:
+                result = self.evaluate(inner_value)
+                if result == '#Error':
+                    result = '#Error'
+            else:
+                result = '#Error'
+        elif value.startswith("'"):
+            if value.endswith("'"):
+                result = value[1:-1]
+            else:
+                result = '#Error'
         else:
-            return '#Error'
+            result = '#Error'
+        
+        self._evaluating.remove(cell)
+        return result
 
