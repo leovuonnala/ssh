@@ -84,3 +84,9 @@ class TestSpreadSheet(TestCase):
         spreadsheet = SpreadSheet()
         spreadsheet.set("A1", "=1+3")
         self.assertEqual("4", spreadsheet.evaluate("A1"))
+
+    def test_addition_with_invalid_value(self):
+        #If the cell "A1" contains "=1+3.5", the result of its evaluation is "#Error".
+        spreadsheet = SpreadSheet()
+        spreadsheet.set("A1", "=1+3.5")
+        self.assertEqual("#Error", spreadsheet.evaluate("A1"))
