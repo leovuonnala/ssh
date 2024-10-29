@@ -12,12 +12,14 @@ class SpreadSheet:
 
     def evaluate(self, cell: str) -> str:
         value = self.get(cell)
-        if value.isdigit():
-            return value
+        if value.isdigit() or (value.startswith('=') and value[1:].isdigit()):
+            return value.lstrip('=')
         elif value.startswith("'") and value.endswith("'"):
             return value
         elif value.startswith("='") and value.endswith("'"):
             return value[1:]
+        elif value.replace('.', '', 1).isdigit() and not value.count('.') > 1:
+            return '#Error'
         else:
             return '#Error'
 
